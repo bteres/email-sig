@@ -16,13 +16,35 @@
   <script data-require="angular-touch@1.5.*" data-semver="1.5.8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-touch.js"></script>
   <script data-require="ui-bootstrap@2.1.3" data-semver="2.1.3" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-2.1.3.js"></script>
   <script src="app.js"></script>
+  <script type="text/javascript">
+  function selectElementContents(el) {
+    var body = document.body, range, sel;
+    if (document.createRange && window.getSelection) {
+      range = document.createRange();
+      sel = window.getSelection();
+      sel.removeAllRanges();
+      try {
+          range.selectNodeContents(el);
+          sel.addRange(range);
+      } catch (e) {
+          range.selectNode(el);
+          sel.addRange(range);
+      }
+    } else if (body.createTextRange) {
+      range = body.createTextRange();
+      range.moveToElementText(el);
+      range.select();
+    }
+    document.execCommand("Copy");
+  }
+  </script>
 </head>
 
 <body ng-controller="MainCtrl">
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1>Switch Email Signature Generator</h1>
+        <h1>FutureWorld Email Signature Generator</h1>
       </div>
     </div>
     <div class="row">
@@ -76,16 +98,19 @@
               <input type="url" class="form-control" id="inputStackoverflow" placeholder="http://stackoverflow.com/users/3510345/bteres" ng-model="stackoverflow">
             </div>
           </div>
+          <div class="form-group">
+              <button class="btn btn-primary pull-right" style="margin-right:15px;" type="button" name="copy" onclick="selectElementContents( document.getElementById('signature') );">Copy</button>
+          </div>
         </form>
       </div>
       <div class="col-xs-12 hidden-md hidden-lg">
         <hr>
       </div>
       <div class="col-md-6">
-        <table border="0" cellpadding="0" cellspacing="0" style="text-align: left; color: #000000; font-family: Helvetica, Arial, sans-serif;">
+        <table id="signature" border="0" cellpadding="0" cellspacing="0" style="text-align: left; color: #000000; font-family: Helvetica, Arial, sans-serif;">
           <tbody>
             <tr>
-              <td style="padding-left: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="font-size: 10pt; font-weight: bold">{{name}}</span>
+              <td style="padding-left: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="font-size: 12pt; font-weight: bold; color: #ED2B63">{{name}}</span>
                 <br>
                 <span style="margin-top: 0px; margin-bottom: 0px; font-weight: normal; font-size: 9pt;">{{title}}</span>
                 <br>
@@ -93,19 +118,27 @@
             </tr>
             <tr>
               <td style="padding-left: 0px; padding-top: 7px; padding-bottom: 4px; padding-right: 0px;" valign="top">
-                <a href="http://www.innovationswitch.com"><img alt="Switch Global Ltd" border="0" height="26" nosend="1" src="http://res.cloudinary.com/innovationswitch/image/upload/c_scale,dpr_1.0,e_sharpen:100,h_50,q_100/v1476366534/SWITCH_logos_blue_1_jmakcy.png" title="Switch Global Limited" width="99"></a>
+                <a href="https://www.futureworld.org"><img alt="FutureWorld" border="0" height="26" nosend="1" src="https://res.cloudinary.com/futureworld/image/upload/v1559141644/futureworld-logo_l28jce.gif" title="FutureWorld"></a>
               </td>
             </tr>
             <tr>
-              <td style="padding-left: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="text-align: left; color: #000000; font-family: Arial; font-size: 9pt; font-style: normal; font-weight: normal;">Mobile: <a ng-href="tel:{{mobile | removeSpaces}}" style="text-decoration: none; color: #5c7f92"><font color="#5c7f92">{{mobile}}</font></a> <font color="#808285">|</font> Skype: <a ng-href="skype:{{skype}}?userinfo" style="text-decoration: none; color: #5c7f92"><font color="#5c7f92">{{skype}}</font></a></span>
+              <td style="padding-left: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="text-align: left; color: #000000; font-family: Arial; font-size: 9pt; font-style: normal; font-weight: normal;">Mobile: <a ng-href="tel:{{mobile | removeSpaces}}" style="text-decoration: none; color: #ED2B63"><font color="#ED2B63">{{mobile}}</font></a></span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="text-align: left; color: #000000; font-family: Arial; font-size: 9pt; font-style: normal; font-weight: normal;">Skype: <a ng-href="skype:{{skype}}?userinfo" style="text-decoration: none; color: #ED2B63"><font color="#ED2B63">{{skype}}</font></a></span>
               </td>
             </tr>
             <tr>
               <td style="padding-left: 0px; padding-top: 7px; padding-bottom: 0px; padding-right: 0px;" valign="top">
-                <a ng-href="{{linkedin}}" ng-if="linkedin" style="text-decoration: none; display: inline;"><img alt="LinkedIn" data-filename="linkedin.png" height="18" nosend="1" src="https://cdn4.iconfinder.com/data/icons/liu-square-blac/60/linkedin-square-social-media-48.png" style="border:none; display:inline;" width="18"></a>
-                <a ng-href="{{twitter}}" ng-if="twitter" style="text-decoration: none; display: inline;"><img alt="Twitter" data-filename="twitter.png" height="18" nosend="1" src="https://cdn4.iconfinder.com/data/icons/liu-square-blac/60/twitter-square-social-media-48.png" style="border:none; display:inline;" width="18"></a>
-                <a ng-href="{{github}}" ng-if="github" style="display: inline; text-decoration: none;"><img alt="Github" data-filename="github.png" height="18" nosend="1" src="https://cdn4.iconfinder.com/data/icons/liu-square-blac/60/github-square-social-media-48.png" style="border:none; display:inline;" width="18"></a>
-                <a ng-href="{{stackoverflow}}" ng-if="stackoverflow" style="display: inline; text-decoration: none;"><img alt="Stackoverflow" data-filename="stackoverflow.png" height="18" nosend="1" src="https://cdn4.iconfinder.com/data/icons/liu-square-blac/60/stackoverflow-square-social-media-48.png" style="border:none; display:inline;" width="18"></a>
+                <a ng-href="{{linkedin}}" ng-if="linkedin" style="text-decoration: none; display: inline;"><img alt="LinkedIn" data-filename="linkedin.png" height="18" nosend="1" src="https://res.cloudinary.com/futureworld/image/upload/v1559146136/linkedin_ujy22z.jpg" style="border:none; display:inline;" width="18"></a>
+                <a ng-href="{{twitter}}" ng-if="twitter" style="text-decoration: none; display: inline;"><img alt="Twitter" data-filename="twitter.png" height="18" nosend="1" src="https://res.cloudinary.com/futureworld/image/upload/v1559146136/twitter_kgpjik.jpg" style="border:none; display:inline;" width="18"></a>
+                <a ng-href="{{github}}" ng-if="github" style="display: inline; text-decoration: none;"><img alt="Github" data-filename="github.png" height="18" nosend="1" src="https://res.cloudinary.com/futureworld/image/upload/v1559146136/github_gprzju.jpg" style="border:none; display:inline;" width="18"></a>
+                <a ng-href="{{stackoverflow}}" ng-if="stackoverflow" style="display: inline; text-decoration: none;"><img alt="Stackoverflow" data-filename="stackoverflow.png" height="18" nosend="1" src="https://res.cloudinary.com/futureworld/image/upload/v1559146136/stackoverflow_nwzwwi.jpg" style="border:none; display:inline;" width="18"></a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 0px; padding-top: 7px; padding-bottom: 0px; padding-right: 0px;" valign="top"><span style="text-align: left; color: #000000; font-family: Arial; font-size: 9pt; font-style: normal; font-weight: normal;"><a href="https://futureworld.org" style="text-decoration: none; color: #ED2B63">FutureWorld.org</a> | <a href="https://futureworld.org" style="text-decoration: none; color: #ED2B63">MindBullets.net</a></span>
               </td>
             </tr>
           </tbody>
